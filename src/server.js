@@ -1,13 +1,20 @@
 import express from 'express';
-// import React from 'react';
-// import ReactDOM from 'react-dom';
-// import App from './App';
-// import './index.css';
+import React from 'react';
+import { renderToString } from 'react-dom/server';
+import App from './App';
+import template from './template';
 
 const server = express();
 
+server.use('/assets', express.static('assets'));
+
 server.get('/', function (req, res) {
-  res.send('Hello World!');
+  const appString = renderToString(<App />);
+
+  res.send(template({
+    body: appString,
+    title: 'Tic Tac Toe'
+  }));
 });
 
 server.listen(3000, function () {
